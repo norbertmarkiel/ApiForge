@@ -1,0 +1,132 @@
+@ApiForge_HostAddress = http://localhost:5042
+
+GET {{ApiForge_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+###############################################################################
+# ADMIN – REGISTER DYNAMIC ENDPOINT
+###############################################################################
+
+POST {{ApiForge_HostAddress}}/admin/endpoints
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Create order",
+  "description": "Creates new order",
+  "path": "/orders/create",
+  "status": "Enabled",
+  "protocols": 1,
+  "rateLimit": {
+    "requestsPerSecond": 100
+  },
+  "schema": {
+    "fields": [
+      {
+        "name": "orderId",
+        "type": "String",
+        "isRequired": true
+      },
+      {
+        "name": "amount",
+        "type": "Number",
+        "isRequired": true
+      },
+      {
+        "name": "isPaid",
+        "type": "Boolean",
+        "isRequired": false
+      }
+    ]
+  }
+}
+
+
+###############################################################################
+# RUNTIME – VALID REQUEST (OK)
+###############################################################################
+
+POST {{ApiForge_HostAddress}}/orders/create
+Content-Type: application/json
+Accept: application/json
+
+{
+  "orderId": "ORD-001",
+  "amount": 199.99,
+  "isPaid": true
+}
+
+
+###############################################################################
+# RUNTIME – INVALID REQUEST (MISSING + WRONG TYPE)
+###############################################################################
+
+POST {{ApiForge_HostAddress}}/orders/create
+Content-Type: application/json
+Accept: application/json
+
+{
+  "amount": "WRONG_TYPE"
+}
+
+
+###############################################################################
+# RUNTIME – ENDPOINT DISABLED (403)
+###############################################################################
+
+POST {{ApiForge_HostAddress}}/orders/create
+Content-Type: application/json
+Accept: application/json
+
+{
+  "orderId": "ORD-002",
+  "amount": 49.99
+}
+
+###############################################################################
+# ADMIN – LIST ALL REGISTERED ENDPOINTS
+###############################################################################
+
+GET {{ApiForge_HostAddress}}/admin/endpoints
+Accept: application/json
+
+
+###############################################################################
+# ADMIN – UPDATE REGISTERED ENDPOINT
+###############################################################################
+
+PUT {{ApiForge_HostAddress}}/admin/endpoints/{EndpointId}
+Content-Type: application/json
+
+{
+  "id": "9b2d3d18-22ac-4cc8-971a-2fd1497877f7",
+  "name": "Create order v2",
+  "description": "Updated description",
+  "path": "/orders/create",
+  "status": "Enabled",
+  "protocols": "Http1",
+  "rateLimit": { "requestsPerSecond": 50 },
+  "schema": {
+    "fields": [
+      { "name": "orderId", "type": "String", "isRequired": true },
+      { "name": "amount", "type": "Number", "isRequired": true }
+    ]
+  }
+}
+
+###
+##############################################################################
+# ADMIN – REMOVE REGISTERED ENDPOINT
+##############################################################################
+
+
+DELETE {{ApiForge_HostAddress}}/admin/endpoints/{EndpointId}
+
+# POST /orders/create
+# {
+#   "orderId": "string",
+#   "amount": 123.45,
+#   "isPaid": true,
+#   "metadata": {}
+# }
