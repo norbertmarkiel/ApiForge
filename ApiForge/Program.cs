@@ -22,6 +22,18 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 builder.Services.AddSingleton<EndpointRegistry>();
 builder.Services.AddSingleton<SchemaValidator>();
 
+var corsPolicyName = "FrontendDev";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(corsPolicyName, policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173") // Vite
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,9 +44,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(corsPolicyName);
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers().RequireCors(corsPolicyName);
 
 app.MapPost("/admin/endpoints", (
     EndpointDefinition definition,
