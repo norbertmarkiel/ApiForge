@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../readme.md" />
+    <File Path="ApiForge/Structure.md" />
+    <File Path="docker-compose.yml" />
+  </Folder>
+  <Folder Name="/WebApp/">
+    <File Path="../WebApp/.gitignore" />
+    <File Path="../WebApp/eslint.config.js" />
+    <File Path="../WebApp/index.html" />
+    <File Path="../WebApp/package-lock.json" />
+    <File Path="../WebApp/package.json" />
+    <File Path="../WebApp/README.md" />
+    <File Path="../WebApp/tsconfig.app.json" />
+    <File Path="../WebApp/tsconfig.json" />
+    <File Path="../WebApp/tsconfig.node.json" />
+    <File Path="../WebApp/vite.config.ts" />
+  </Folder>
+  <Project Path="ApiForge/ApiForge.csproj" />
+</Solution>
