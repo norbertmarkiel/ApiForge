@@ -1,6 +1,7 @@
 using ApiForge.Contract;
 using ApiForge.Models;
 using ApiForge.Runtime;
+using Microsoft.AspNetCore.Cors;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -28,7 +29,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(corsPolicyName, policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173") // Vite
+             .WithOrigins(
+                "http://localhost:5173",
+                "http://127.0.0.1:5173")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -41,13 +44,16 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
-app.UseHttpsRedirection();
 
 app.UseCors(corsPolicyName);
 app.UseAuthorization();
 
-app.MapControllers().RequireCors(corsPolicyName);
+app.MapControllers();
 
 app.MapPost("/admin/endpoints", (
     EndpointDefinition definition,
