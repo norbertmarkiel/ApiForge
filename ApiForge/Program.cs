@@ -49,7 +49,6 @@ else
     app.UseHttpsRedirection();
 }
 
-
 app.UseCors(corsPolicyName);
 app.UseAuthorization();
 
